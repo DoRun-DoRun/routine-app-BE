@@ -1,6 +1,6 @@
 package dorun.project.routineapp.oauth.entity;
 
-import dorun.project.routineapp.api.entity.User;
+import dorun.project.routineapp.user.domain.User;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -86,7 +86,7 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
     public static UserPrincipal create(User user) {
         return new UserPrincipal(
                 user.getUserId(),
-                user.getPassword(),
+                null,
                 user.getProviderType(),
                 RoleType.USER,
                 Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode()))

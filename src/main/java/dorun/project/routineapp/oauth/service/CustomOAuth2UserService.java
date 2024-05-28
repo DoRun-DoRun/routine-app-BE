@@ -1,21 +1,19 @@
 package dorun.project.routineapp.oauth.service;
 
-import dorun.project.routineapp.api.entity.User;
-import dorun.project.routineapp.api.repository.UserRepository;
 import dorun.project.routineapp.oauth.entity.ProviderType;
 import dorun.project.routineapp.oauth.entity.RoleType;
 import dorun.project.routineapp.oauth.entity.UserPrincipal;
 import dorun.project.routineapp.oauth.exception.OAuth2ProviderException;
 import dorun.project.routineapp.oauth.info.OAuth2UserInfo;
 import dorun.project.routineapp.oauth.info.OAuth2UserInfoFactory;
-import dorun.project.routineapp.oauth.token.Token;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dorun.project.routineapp.user.domain.User;
+import dorun.project.routineapp.user.domain.UserRepository;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import javax.naming.AuthenticationException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +42,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         try {
             OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, userAttributes);
-            User savedUser = userRepository.findByUserId(userInfo.getId());
+            User savedUser = userRepository.findByUserIdAndProviderType(userInfo.getId(), providerType)
+                    .orElse(createUser(userInfo, providerType));
 
             if (savedUser != null) {
                 if (providerType != savedUser.getProviderType()) {
@@ -55,6 +54,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             } else {
                 savedUser = createUser(userInfo, providerType);
             }
+
             return UserPrincipal.create(savedUser, userAttributes);
 //        } catch (AuthenticationException e) {
 //            throw e;
@@ -66,8 +66,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private User createUser(OAuth2UserInfo userInfo, ProviderType providerType) {
         return User.builder()
                 .userId(userInfo.getId())
-                .username(userInfo.getName())
-                .password("NO_PASS")
+                .nickname(userInfo.getName())
+//                .password("NO_PASS")
                 .email(userInfo.getEmail())
                 .providerType(providerType)
                 .roleType(RoleType.USER)
@@ -75,8 +75,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User updateUser(User user, OAuth2UserInfo userInfo) {
-        if (userInfo.getName() != null && !user.getUsername().equals(userInfo.getName())) {
-            user.setUsername(userInfo.getName());
+        if (userInfo.getName() != null && !user.getNickname().equals(userInfo.getName())) {
+            user.updateNickname(userInfo.getName());
         }
         return user;
     }
@@ -88,6 +88,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User user = super.loadUser(request);
         return user.getAttributes();
     }
+
     private Map<String, Object> decodeAppleJwtTokenPayload(String appleIdToken) {
         Map<String, Object> jwtClaims = new HashMap<>();
         try {

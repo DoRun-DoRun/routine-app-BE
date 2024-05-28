@@ -56,11 +56,12 @@ public class SecurityConfig {
                         .accessDeniedHandler(tokenAccessDeniedHandler)
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                    .requestMatchers("/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                    .requestMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
-                    .requestMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
-                    .anyRequest().authenticated()
+                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                        .requestMatchers("/routines/**").permitAll()
+                        .requestMatchers("/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
+                        .requestMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
+                        .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .tokenEndpoint(endpoint -> endpoint

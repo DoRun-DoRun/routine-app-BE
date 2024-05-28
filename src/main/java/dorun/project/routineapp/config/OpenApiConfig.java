@@ -11,9 +11,9 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI openAPI() {
         Info info = new Info()
-                .title("소셜 로그인 템플릿 프로젝트 API Document")
+                .title("Routine APP API Document")
                 .version("v0.0.1")
-                .description("소셜 로그인 템플릿 프로젝트의 API 명세서입니다.");
+                .description("Routine APP API 명세서입니다.");
         return new OpenAPI()
                 .components(new Components())
                 .info(info);
