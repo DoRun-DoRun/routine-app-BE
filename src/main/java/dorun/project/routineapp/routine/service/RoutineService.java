@@ -61,14 +61,6 @@ public class RoutineService {
                 .routineStatus(RoutineStatus.COMPLETED)
                 .build());
 
-        RoutineRecord mock = RoutineRecord.builder()
-                .routineStatus(RoutineStatus.COMPLETED)
-                .routineId(1L)
-                .date(LocalDate.of(2024, 5, 20))
-                .build();
-
-        routineRecordRepository.save(mock);
-
         routine.complete();
         return routine;
     }
