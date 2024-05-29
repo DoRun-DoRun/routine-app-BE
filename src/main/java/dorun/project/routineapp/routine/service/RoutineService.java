@@ -4,7 +4,6 @@ import dorun.project.routineapp.common.exception.ErrorCode;
 import dorun.project.routineapp.common.exception.NotFoundException;
 import dorun.project.routineapp.routine.controller.dto.RoutineRecordResponse;
 import dorun.project.routineapp.routine.controller.dto.RoutineStatusRecord;
-import dorun.project.routineapp.routine.controller.dto.SubRoutineSummary;
 import dorun.project.routineapp.routine.domain.model.Routine;
 import dorun.project.routineapp.routine.domain.model.RoutinePattern;
 import dorun.project.routineapp.routine.domain.model.RoutineRecord;
