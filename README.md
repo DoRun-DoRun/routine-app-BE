@@ -13,7 +13,7 @@ graph LR;
 ```
 
 ### 📦 ERD
-
+<img width="1006" alt="image" src="https://github.com/DoRun-DoRun/routine-app-BE/assets/74031333/ee1488af-1d97-4c4b-a901-57e7f5e6d77c">
 
 ### 🤔 고민
 
