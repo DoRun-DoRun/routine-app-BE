@@ -35,7 +35,7 @@ public class RoutineService {
     private final SubRoutineRepository subRoutineRepository;
 
     @Transactional
-    public Routine createRoutine(String userId, String goal, List<String> routinePatterns,
+    public Routine createRoutine(Long userId, String goal, List<String> routinePatterns,
                                  boolean notificationEnabled, Long notificationTime) {
         Routine routine = Routine.builder()
                 .userId(userId)
@@ -106,11 +106,11 @@ public class RoutineService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ROUTINE_NOT_FOUND));
     }
 
-    public List<Routine> findAllRoutinesByUserId(String userId) {
+    public List<Routine> findAllRoutinesByUserId(Long userId) {
         return routineRepository.findAllByUserId(userId);
     }
 
-    public List<RoutineRecordResponse> findAllRoutineByUserIdAndBetweenPeriod(String userId,
+    public List<RoutineRecordResponse> findAllRoutineByUserIdAndBetweenPeriod(Long userId,
                                                                               LocalDate startDate, LocalDate endDate) {
         List<Routine> routines = routineRepository.findAllByUserId(userId);
 
@@ -119,7 +119,7 @@ public class RoutineService {
                 .toList();
     }
 
-    public List<RoutineRecordResponse> findAllRoutineWeekRecordsByUserId(String userId) {
+    public List<RoutineRecordResponse> findAllRoutineWeekRecordsByUserId(Long userId) {
         List<Routine> routines = routineRepository.findAllByUserId(userId);
         WeekPeriod weekPeriod = WeekPeriod.calculateCurrentWeekPeriod();
 
@@ -128,7 +128,7 @@ public class RoutineService {
                 .toList();
     }
 
-    public List<RoutineRecordResponse> findAllRoutinePreviousWeekRecordsByUserId(String userId) {
+    public List<RoutineRecordResponse> findAllRoutinePreviousWeekRecordsByUserId(Long userId) {
         List<Routine> routines = routineRepository.findAllByUserId(userId);
         WeekPeriod weekPeriod = WeekPeriod.calculatePreviousWeekPeriod();
 

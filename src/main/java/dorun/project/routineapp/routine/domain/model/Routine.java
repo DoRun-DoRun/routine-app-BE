@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -27,9 +28,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(name = "routines")
+@Table(name = "routine")
 @SQLRestriction("is_deleted = false")
-@SQLDelete(sql = "UPDATE routines SET is_deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE routine SET is_deleted = true WHERE id = ?")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,7 +44,7 @@ public class Routine extends BaseEntity {
 
     @Column(name = "user_id")
     @NotNull
-    private String userId;
+    private Long userId;
 
     @Column(name = "goal")
     private String goal;
@@ -64,7 +65,7 @@ public class Routine extends BaseEntity {
     @ElementCollection(targetClass = RoutinePattern.class)
     @CollectionTable(name = "routine_pattern", joinColumns = @JoinColumn(name = "routine_id"))
     @Enumerated(EnumType.STRING)
-    private Set<RoutinePattern> routinePattern = new HashSet<>();
+    private Set<RoutinePattern> routinePattern = new LinkedHashSet<>();
 
     @Column(name = "notification_enabled")
     private Boolean notificationEnabled;

@@ -35,7 +35,7 @@ public class RoutineController {
     }
 
     @GetMapping()
-    public ApiResponse<List<RoutineSummary>> getAllRoutinesByUserId(@NotBlank @RequestParam("userId") String userId) {
+    public ApiResponse<List<RoutineSummary>> getAllRoutinesByUserId(@NotBlank @RequestParam("userId") Long userId) {
         List<Routine> routines = routineService.findAllRoutinesByUserId(userId);
 
         List<RoutineSummary> response = routines.stream()
@@ -54,7 +54,7 @@ public class RoutineController {
 
     @GetMapping("/records")
     public ApiResponse<List<RoutineRecordResponse>> getRoutineRecordsByUserIdBetweenDate(
-            @RequestParam("userId") String userId, @RequestBody PeriodRequest request) {
+            @RequestParam("userId") Long userId, @RequestBody PeriodRequest request) {
 
         List<RoutineRecordResponse> response = routineService
                 .findAllRoutineByUserIdAndBetweenPeriod(userId, request.startDate(), request.endDate());
@@ -64,7 +64,7 @@ public class RoutineController {
 
     @GetMapping("/records/week")
     public ApiResponse<List<RoutineRecordResponse>> getRoutineCurrentWeekRecordsByUserId(
-            @RequestParam("userId") String userId) {
+            @RequestParam("userId") Long userId) {
 
         List<RoutineRecordResponse> response = routineService.findAllRoutineWeekRecordsByUserId(userId);
         return new ApiResponse<>(ApiResponseMessage.SUCCESS_REQUEST, response);
@@ -72,7 +72,7 @@ public class RoutineController {
 
     @GetMapping("/records/previousWeek")
     public ApiResponse<List<RoutineRecordResponse>> getRoutinePreviousWeekRecordsByUserId(
-            @RequestParam("userId") String userId) {
+            @RequestParam("userId") Long userId) {
 
         List<RoutineRecordResponse> response = routineService.findAllRoutinePreviousWeekRecordsByUserId(userId);
         return new ApiResponse<>(ApiResponseMessage.SUCCESS_REQUEST, response);
@@ -90,7 +90,7 @@ public class RoutineController {
     }
 
     @PostMapping()
-    public ApiResponse<Routine> createRoutine(@RequestParam("userId") String userId, @RequestBody RoutineRequest request) {
+    public ApiResponse<Routine> createRoutine(@RequestParam("userId") Long userId, @RequestBody RoutineRequest request) {
         Routine routine = routineService.createRoutine(
                 userId,
                 request.goal(),
